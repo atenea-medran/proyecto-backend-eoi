@@ -1,4 +1,4 @@
-package com.atenea.talentmixer.services;
+package com.atenea.talentmixer.models.services;
 
 import java.util.List;
 
@@ -7,24 +7,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.atenea.talentmixer.models.dao.IprojectDao;
-import com.atenea.talentmixer.models.entities.Project;
+import com.atenea.talentmixer.models.entity.Project;
+
 
 @Service
 public class ProjectServiceImpl implements IprojectService {
 	
-	@Autowired  // Para incorporar un componente dentro de otro componente
+	@Autowired
 	private IprojectDao projectDao;
 	
 	@Override
-	@Transactional(readOnly=true)  // Auto-exiges que dentro del método no usarás nada que pueda modificar los datos
+	@Transactional(readOnly=true)
 	public List<Project> findAll() {
 		return (List<Project>)projectDao.findAll();
 	}
-	
-	@Override
-	@Transactional(readOnly=true)
-	public Project findById(Long id) {
-		return projectDao.findById(id).orElse(null);
-	}
+
 
 }
