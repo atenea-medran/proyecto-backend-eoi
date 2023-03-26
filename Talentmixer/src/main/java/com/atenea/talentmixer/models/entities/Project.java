@@ -1,4 +1,4 @@
-package com.atenea.talentmixer.models.entity;
+package com.atenea.talentmixer.models.entities;
 
 // default package
 // Generated 25 mar 2023 12:17:13 by Hibernate Tools 4.3.6.Final
@@ -6,6 +6,8 @@ package com.atenea.talentmixer.models.entity;
 import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -45,9 +47,18 @@ public class Project implements java.io.Serializable {
 		this.createdAt = createdAt;
 		this.image = image;
 	}
+	
+	public Project(Project p) {
+		this.id = p.id;
+		this.tittle = p.tittle;
+		this.summary = p.summary;
+		this.description = p.description;
+		this.createdAt = p.createdAt;
+		this.image = p.image;
+	}
 
 	@Id
-
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	public int getId() {
 		return this.id;
