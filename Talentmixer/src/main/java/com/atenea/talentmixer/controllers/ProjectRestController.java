@@ -129,13 +129,14 @@ public class ProjectRestController {
 	@PostMapping("")
 	public ResponseEntity<?> create(@RequestBody Project project){
 		
-		Project nuevo = null;
+		Project newProject = null;
 		Map<String,Object> response = new HashMap<>();
 					
 		try {
-			nuevo = projectService.save(project);
+			newProject = projectService.save(project);
 			if(project.getImage()!=null)
-				nuevo.setImage(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/" + nuevo.getImage());
+				newProject.setImage(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/" + newProject.getImage());
+				
 		} catch (DataAccessException e) {  // Error al acceder a la base de datos
 			response.put("mensaje", "Error al conectar con la base de datos");
 			response.put("error", e.getMessage().concat(":")
@@ -144,7 +145,7 @@ public class ProjectRestController {
 		}
 		
 		response.put("mensaje", "El proyecto se ha insertado correctamente");
-		response.put("project", nuevo);
+		response.put("project", newProject);
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
 	}
 	
