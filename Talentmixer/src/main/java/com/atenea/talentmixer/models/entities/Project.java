@@ -1,14 +1,15 @@
 package com.atenea.talentmixer.models.entities;
 
 // default package
-// Generated 25 mar 2023 12:17:13 by Hibernate Tools 4.3.6.Final
+// Generated 28 mar 2023 11:57:20 by Hibernate Tools 4.3.6.Final
 
 import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -22,7 +23,8 @@ public class Project implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private int id;
-	private String tittle;
+	private UserAccount userAccount;
+	private String title;
 	private String summary;
 	private String description;
 	private Date createdAt;
@@ -31,26 +33,29 @@ public class Project implements java.io.Serializable {
 	public Project() {
 	}
 
-	public Project(int id, String tittle, String summary, String description, Date createdAt) {
+	public Project(int id, UserAccount userAccount, String title, String summary, String description, Date createdAt) {
 		this.id = id;
-		this.tittle = tittle;
+		this.userAccount = userAccount;
+		this.title = title;
 		this.summary = summary;
 		this.description = description;
 		this.createdAt = createdAt;
 	}
 
-	public Project(int id, String tittle, String summary, String description, Date createdAt, String image) {
+	public Project(int id, UserAccount userAccount, String title, String summary, String description, Date createdAt,
+			String image) {
 		this.id = id;
-		this.tittle = tittle;
+		this.userAccount = userAccount;
+		this.title = title;
 		this.summary = summary;
 		this.description = description;
 		this.createdAt = createdAt;
 		this.image = image;
 	}
-	
 	public Project(Project p) {
 		this.id = p.id;
-		this.tittle = p.tittle;
+		this.userAccount = p.userAccount;
+		this.title = p.title;
 		this.summary = p.summary;
 		this.description = p.description;
 		this.createdAt = p.createdAt;
@@ -58,7 +63,7 @@ public class Project implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+
 	@Column(name = "id", unique = true, nullable = false)
 	public int getId() {
 		return this.id;
@@ -68,13 +73,23 @@ public class Project implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "tittle", nullable = false, length = 150)
-	public String getTittle() {
-		return this.tittle;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_user_account", nullable = false)
+	public UserAccount getUserAccount() {
+		return this.userAccount;
 	}
 
-	public void setTittle(String tittle) {
-		this.tittle = tittle;
+	public void setUserAccount(UserAccount userAccount) {
+		this.userAccount = userAccount;
+	}
+
+	@Column(name = "title", nullable = false, length = 150)
+	public String getTitle() {
+		return this.title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	@Column(name = "summary", nullable = false, length = 300)

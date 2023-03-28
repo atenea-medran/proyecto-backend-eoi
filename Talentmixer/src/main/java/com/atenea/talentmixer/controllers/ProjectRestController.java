@@ -37,7 +37,7 @@ public class ProjectRestController {
 	public List<ProjectDto> indexDto(){
 		List<ProjectDto> listaDto = new ArrayList<>();
 		projectService.findAll().forEach(project->{
-			listaDto.add(new ProjectDto(project.getId(),project.getTittle(),project.getSummary(),project.getDescription(),project.getCreatedAt(),project.getImage()));
+			listaDto.add(new ProjectDto(project.getId(),project.getTitle(),project.getSummary(),project.getDescription(),project.getCreatedAt(),project.getImage()));
 		});		
 		return listaDto;
 	}
@@ -183,7 +183,7 @@ public class ProjectRestController {
 		}
 		// Si llegamos aquí es que el cliente que queremos modificar SI existe
 		try {
-			currentProject.setTittle(project.getTittle());
+			currentProject.setTitle(project.getTitle());
 			currentProject.setSummary(project.getSummary());
 			currentProject.setDescription(project.getDescription());
 			currentProject.setCreatedAt(project.getCreatedAt());

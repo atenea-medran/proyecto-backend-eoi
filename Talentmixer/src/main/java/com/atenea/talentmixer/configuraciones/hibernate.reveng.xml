@@ -3,4 +3,5 @@
 
 <hibernate-reverse-engineering>
   <table-filter match-name="project"/>
+  <table-filter match-name="user_account"/>
 </hibernate-reverse-engineering>
