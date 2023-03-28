@@ -43,6 +43,13 @@ public class UserAccount implements java.io.Serializable {
 		this.userAccountPassword = userAccountPassword;
 		this.projects = projects;
 	}
+	
+	public UserAccount(UserAccount u) {
+		this.id = u.id;
+		this.userAccountName = u.userAccountName;
+		this.userAccountPassword = u.userAccountPassword;
+		this.projects = u.projects;
+	}
 
 	@Id
 
@@ -73,7 +80,7 @@ public class UserAccount implements java.io.Serializable {
 		this.userAccountPassword = userAccountPassword;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userAccount")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idUserAccount")
 	public Set<Project> getProjects() {
 		return this.projects;
 	}
