@@ -40,10 +40,10 @@ public class ProjectServiceImpl implements IprojectService {
 	@Override
 	@Transactional
 	public Project save(Project project) {
-		if(project.getImage() != null) {
-			String ruta = imageUtils.saveImageBase64("projects", project.getImage());
-			project.setImage(ruta);
-		}
+//		if(project.getImage() != null) {
+//			String ruta = imageUtils.saveImageBase64("projects", project.getImage());
+//			project.setImage(ruta);
+//		}
 		return projectDao.save(project);
 	}
 

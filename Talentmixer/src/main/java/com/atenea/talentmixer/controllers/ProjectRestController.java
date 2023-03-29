@@ -24,6 +24,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.atenea.talentmixer.models.dto.ProjectDto;
 import com.atenea.talentmixer.models.entities.Project;
 import com.atenea.talentmixer.models.services.IprojectService;
+import com.atenea.talentmixer.utilities.ImageUtils;
 
 @CrossOrigin(origins= {"*"})
 @RestController
@@ -133,6 +134,10 @@ public class ProjectRestController {
 		Map<String,Object> response = new HashMap<>();
 					
 		try {
+			if(project.getImage() != null) {
+				String ruta = imageUtils.saveImageBase64("projects", project.getImage());
+				project.setImage(ruta);
+			}
 			newProject = projectService.save(project);
 
 			if(project.getImage()!=null)
@@ -162,6 +167,8 @@ public class ProjectRestController {
 		return projectService.save(objetoActualizar); // Guardo la nueva información
 	}*/
 	
+	private final ImageUtils imageUtils = new ImageUtils();
+
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@RequestBody Project project, @PathVariable int id){
 		
@@ -189,8 +196,11 @@ public class ProjectRestController {
 			currentProject.setDescription(project.getDescription());
 			currentProject.setCreatedAt(project.getCreatedAt());
 			
-			if(project.getImage() != null)
+			if(project.getImage() != null) {
 				currentProject.setImage(project.getImage());
+				String ruta = imageUtils.saveImageBase64("projects", project.getImage());
+				project.setImage(ruta);
+			}
 			updatedProject = projectService.save(currentProject);
 			if(project.getImage() != null)
 				updatedProject.setImage(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/" + updatedProject.getImage());
