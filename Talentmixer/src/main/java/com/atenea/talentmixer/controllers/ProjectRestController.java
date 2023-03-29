@@ -75,13 +75,13 @@ public class ProjectRestController {
 		Map<String,Object> response = new HashMap<>();
 		try {
 			project = projectService.findById(id);
-		} catch (DataAccessException e) {  // fallo en la petición a la base de datos
+		} catch (DataAccessException e) {  
 			response.put("mensaje", "Error al conectar con la base de datos");
 			response.put("error", e.getMessage().concat(":")
 					.concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		if(project==null) {  // no existe el id de cliente
+		if(project==null) {
 			response.put("mensaje", "El proyecto con ID: ".concat(id+"").concat(" no existe"));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
 		}
@@ -92,12 +92,7 @@ public class ProjectRestController {
 		return new ResponseEntity<Project>(project,HttpStatus.OK);		
 	}
 	
-	/*
-	@DeleteMapping("/{id}")  // Borra un project
-	public void delete(@PathVariable int id){
-		projectService.delete(id);
-	}*/
-	
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable int id){
 		Project project = null;
@@ -118,13 +113,6 @@ public class ProjectRestController {
 		response.put("mensaje", "El proyecto se ha borrado correctamente");
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
-	
-	/*
-	@PostMapping("")   // Inserta un project
-	@ResponseStatus(HttpStatus.CREATED)
-	public Project create(@RequestBody Project project) {
-		return projectService.save(project);
-	}*/
 	
 	@PostMapping("")
 	public ResponseEntity<?> create(@RequestBody Project project){
@@ -149,17 +137,6 @@ public class ProjectRestController {
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
 	}
 	
-	/*
-	@PutMapping("/{id}")  // actualiza un cliente
-	@ResponseStatus(HttpStatus.CREATED)
-	public Project update(@RequestBody Project project,@PathVariable int id) {
-		Project objetoActualizar = projectService.findById(id);  // Buscamos el elemento a cambiar
-		objetoActualizar.setNombre(project.getNombre());		// cambiamos los datos
-		objetoActualizar.setDescripcion(project.getDescripcion());
-		objetoActualizar.setPrecio(project.getPrecio());
-		objetoActualizar.setFecha(project.getFecha());
-		return projectService.save(objetoActualizar); // Guardo la nueva información
-	}*/
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@RequestBody Project project, @PathVariable int id){
@@ -169,19 +146,18 @@ public class ProjectRestController {
 		Map<String,Object> response = new HashMap<>();
 			
 		try {
-			currentProject = projectService.findById(id); // El cliente puede existir o no
-		} catch (DataAccessException e) {  // Error al acceder a la base de datos
+			currentProject = projectService.findById(id); 
+		} catch (DataAccessException e) {  
 			response.put("mensaje", "Error al conectar con la base de datos");
 			response.put("error", e.getMessage().concat(":")
 					.concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		if(currentProject==null) { // No existe en la base de datos
+		if(currentProject==null) {
 			response.put("mensaje", "El proyecto con ID: ".concat(id+"").concat(" no existe en la base de datos"));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
 		}
-		// Si llegamos aquí es que el cliente que queremos modificar SI existe
 		try {
 			currentProject.setTitle(project.getTitle());
 			currentProject.setSummary(project.getSummary());
