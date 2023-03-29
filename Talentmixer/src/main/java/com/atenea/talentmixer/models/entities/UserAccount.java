@@ -8,6 +8,8 @@ import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -19,74 +21,126 @@ import jakarta.persistence.Table;
 @Table(name = "user_account")
 public class UserAccount implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private int id;
-	private String userAccountName;
-	private String userAccountPassword;
+	
+	@Column(name = "username", nullable = false, length = 100)
+	private String username;
+	
+	@Column(name = "user_password", nullable = false, length = 100)
+	private String userPassword;
+	
+	@Column(name = "firstname", nullable = false, length = 100)
+	private String firstName;
+	@Column(name = "surname", nullable = false, length = 100)
+	private String surname;
+	@Column(name = "email", nullable = false, length = 100)
+	private String email;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idUserAccount")
 	private Set<Project> projects = new HashSet<Project>(0);
 
 	public UserAccount() {
 	}
 
-	public UserAccount(int id, String userAccountName, String userAccountPassword) {
+	public UserAccount(int id, String username, String userPassword, String firstName, String surname, String email,
+			Set<Project> projects) {
+		super();
 		this.id = id;
-		this.userAccountName = userAccountName;
-		this.userAccountPassword = userAccountPassword;
-	}
-
-	public UserAccount(int id, String userAccountName, String userAccountPassword, Set<Project> projects) {
-		this.id = id;
-		this.userAccountName = userAccountName;
-		this.userAccountPassword = userAccountPassword;
+		this.username = username;
+		this.userPassword = userPassword;
+		this.firstName = firstName;
+		this.surname = surname;
+		this.email = email;
 		this.projects = projects;
 	}
 	
+	public UserAccount(int id, String username, String userPassword, String firstName, String surname, String email) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.userPassword = userPassword;
+		this.firstName = firstName;
+		this.surname = surname;
+		this.email = email;
+
+	}
+	
 	public UserAccount(UserAccount u) {
+		super();
 		this.id = u.id;
-		this.userAccountName = u.userAccountName;
-		this.userAccountPassword = u.userAccountPassword;
+		this.username = u.username;
+		this.userPassword = u.userPassword;
+		this.firstName = u.firstName;
+		this.surname = u.surname;
+		this.email = u.email;
 		this.projects = u.projects;
 	}
 
-	@Id
-
-	@Column(name = "id", unique = true, nullable = false)
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	@Column(name = "user_account_name", nullable = false, length = 100)
-	public String getUserAccountName() {
-		return this.userAccountName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserAccountName(String userAccountName) {
-		this.userAccountName = userAccountName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	@Column(name = "user_account_password", nullable = false, length = 100)
-	public String getUserAccountPassword() {
-		return this.userAccountPassword;
+	public String getUserPassword() {
+		return userPassword;
 	}
 
-	public void setUserAccountPassword(String userAccountPassword) {
-		this.userAccountPassword = userAccountPassword;
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idUserAccount")
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public Set<Project> getProjects() {
-		return this.projects;
+		return projects;
 	}
 
 	public void setProjects(Set<Project> projects) {
 		this.projects = projects;
 	}
+
+
+
+	
+
+
+
+	
 
 }

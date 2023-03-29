@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.atenea.talentmixer.models.dao.IuserAccountDao;
+import com.atenea.talentmixer.models.entities.Project;
 import com.atenea.talentmixer.models.entities.UserAccount;
 
 
@@ -18,27 +19,26 @@ public class UserAccountServiceImpl implements IuserAccountService {
 
 	@Override
 	@Transactional(readOnly=true)
-
 	public List<UserAccount> findAll() {
 		return (List<UserAccount>) userAccountDao.findAll();
 	}
-
+	
 	@Override
+	@Transactional(readOnly=true)
 	public UserAccount findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return userAccountDao.findById(id).orElse(null);
 	}
 
 	@Override
+	@Transactional
 	public void delete(int id) {
-		// TODO Auto-generated method stub
-		
+		userAccountDao.deleteById(id);
 	}
 
 	@Override
+	@Transactional
 	public UserAccount save(UserAccount userAccount) {
-		// TODO Auto-generated method stub
-		return null;
+		return userAccountDao.save(userAccount);
 	}
 
 }
