@@ -134,7 +134,6 @@ public class ProjectRestController {
 					
 		try {
 			newProject = projectService.save(project);
-
 			if(project.getImage()!=null)
 				newProject.setImage(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/" + newProject.getImage());
 				
@@ -188,7 +187,6 @@ public class ProjectRestController {
 			currentProject.setSummary(project.getSummary());
 			currentProject.setDescription(project.getDescription());
 			currentProject.setCreatedAt(project.getCreatedAt());
-			
 			if(project.getImage() != null)
 				currentProject.setImage(project.getImage());
 			updatedProject = projectService.save(currentProject);
