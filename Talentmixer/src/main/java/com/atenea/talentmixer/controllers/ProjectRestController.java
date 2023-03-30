@@ -58,7 +58,7 @@ public class ProjectRestController {
 		                return project;
 		            })
 		            .collect(Collectors.toList());
-		} catch (DataAccessException e) {  // Error al acceder a la base de datos
+		} catch (DataAccessException e) {  
 			response.put("mensaje", "Error al conectar con la base de datos");
 			response.put("error", e.getMessage().concat(":")
 					.concat(e.getMostSpecificCause().getMessage()));
@@ -85,10 +85,9 @@ public class ProjectRestController {
 			response.put("mensaje", "El proyecto con ID: ".concat(id+"").concat(" no existe"));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
 		}
-        if(project.getImage()!=null) // si el project tiene imagen
+        if(project.getImage()!=null) 
         	project.setImage(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/" + project.getImage());
 
-		// ha encontrado el cliente
 		return new ResponseEntity<Project>(project,HttpStatus.OK);		
 	}
 	
@@ -100,13 +99,13 @@ public class ProjectRestController {
 		try {
 			project = projectService.findById(id);
 			projectService.delete(id);
-		} catch (DataAccessException e) {  // Error al acceder a la base de datos
+		} catch (DataAccessException e) {  
 			response.put("mensaje", "Error al eliminar el id");
 			response.put("error", e.getMessage().concat(":")
 					.concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
 		}
-		if(project==null) {  // no existe el id de cliente
+		if(project==null) {  
 			response.put("mensaje", "El proyecto con ID: ".concat(id+"").concat(" no existe"));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
 		}
@@ -125,7 +124,7 @@ public class ProjectRestController {
 			if(project.getImage()!=null)
 				newProject.setImage(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/" + newProject.getImage());
 				
-		} catch (DataAccessException e) {  // Error al acceder a la base de datos
+		} catch (DataAccessException e) { 
 			response.put("mensaje", "Error al conectar con la base de datos");
 			response.put("error", e.getMessage().concat(":")
 					.concat(e.getMostSpecificCause().getMessage()));
@@ -168,7 +167,7 @@ public class ProjectRestController {
 			updatedProject = projectService.save(currentProject);
 			if(project.getImage() != null)
 				updatedProject.setImage(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/" + updatedProject.getImage());
-		} catch (DataAccessException e) {  // Error al acceder a la base de datos
+		} catch (DataAccessException e) { 
 			response.put("mensaje", "Error al conectar con la base de datos");
 			response.put("error", e.getMessage().concat(":")
 					.concat(e.getMostSpecificCause().getMessage()));
