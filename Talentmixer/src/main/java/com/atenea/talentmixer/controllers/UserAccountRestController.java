@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.atenea.talentmixer.models.entities.Project;
 import com.atenea.talentmixer.models.entities.UserAccount;
 import com.atenea.talentmixer.models.services.IuserAccountService;
 
@@ -45,7 +47,7 @@ public class UserAccountRestController {
 		                return userAccount;
 		            })
 		            .collect(Collectors.toList());
-		} catch (DataAccessException e) {  // Error al acceder a la base de datos
+		} catch (DataAccessException e) {  
 			response.put("mensaje", "Error al conectar con la base de datos");
 			response.put("error", e.getMessage().concat(":")
 					.concat(e.getMostSpecificCause().getMessage()));
@@ -62,13 +64,13 @@ public class UserAccountRestController {
 		Map<String,Object> response = new HashMap<>();
 		try {
 			userAccount = userAccountService.findById(id);
-		} catch (DataAccessException e) {  // fallo en la petición a la base de datos
+		} catch (DataAccessException e) {  
 			response.put("mensaje", "Error al conectar con la base de datos");
 			response.put("error", e.getMessage().concat(":")
 					.concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		if(userAccount==null) {  // no existe el id de cliente
+		if(userAccount==null) {  
 			response.put("mensaje", "El usuario con ID: ".concat(id+"").concat(" no existe"));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
 		}
@@ -83,17 +85,17 @@ public class UserAccountRestController {
 		try {
 			userAccount = userAccountService.findById(id);
 			userAccountService.delete(id);
-		} catch (DataAccessException e) {  // Error al acceder a la base de datos
+		} catch (DataAccessException e) {  
 			response.put("mensaje", "Error al eliminar el id");
 			response.put("error", e.getMessage().concat(":")
 					.concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
 		}
-		if(userAccount==null) {  // no existe el id de cliente
+		if(userAccount==null) {  
 			response.put("mensaje", "El proyecto con ID: ".concat(id+"").concat(" no existe"));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
 		}
-		response.put("mensaje", "El proyecto se ha borrado correctamente");
+		response.put("mensaje", "El usuario se ha borrado correctamente");
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
 	
@@ -106,7 +108,7 @@ public class UserAccountRestController {
 		try {
 			newUserAccount = userAccountService.save(userAccount);
 
-		} catch (DataAccessException e) {  // Error al acceder a la base de datos
+		} catch (DataAccessException e) { 
 			response.put("mensaje", "Error al conectar con la base de datos");
 			response.put("error", e.getMessage().concat(":")
 					.concat(e.getMostSpecificCause().getMessage()));
@@ -116,6 +118,46 @@ public class UserAccountRestController {
 		response.put("mensaje", "El usuario se ha insertado correctamente");
 		response.put("user", newUserAccount);
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<?> update(@RequestBody UserAccount userAccount, @PathVariable int id){
+		
+		UserAccount currentUser = null;
+		UserAccount updatedUser = null;
+		Map<String,Object> response = new HashMap<>();
+			
+		try {
+			currentUser = userAccountService.findById(id); 
+		} catch (DataAccessException e) {  
+			response.put("mensaje", "Error al conectar con la base de datos");
+			response.put("error", e.getMessage().concat(":")
+					.concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if(currentUser==null) {
+			response.put("mensaje", "El usuario con ID: ".concat(id+"").concat(" no existe en la base de datos"));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+		}
+		try {
+			currentUser.setUsername(userAccount.getUsername());
+			currentUser.setUserPassword(userAccount.getUserPassword());
+			currentUser.setFirstName(userAccount.getFirstName());
+			currentUser.setSurname(userAccount.getSurname());
+			currentUser.setEmail(userAccount.getEmail());
+			currentUser.setProjects(userAccount.getProjects());
+		} catch (DataAccessException e) { 
+			response.put("mensaje", "Error al conectar con la base de datos");
+			response.put("error", e.getMessage().concat(":")
+					.concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		response.put("mensaje", "El usuario se ha modificado correctamente");
+		response.put("userAccount", updatedUser);
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
+
 	}
 
 }
