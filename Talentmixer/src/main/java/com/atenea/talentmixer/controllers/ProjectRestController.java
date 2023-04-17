@@ -25,7 +25,7 @@ import com.atenea.talentmixer.models.dto.ProjectDto;
 import com.atenea.talentmixer.models.entities.Project;
 import com.atenea.talentmixer.models.services.IprojectService;
 
-@CrossOrigin(origins= {"34.175.203.122"})
+@CrossOrigin(origins= {"*"})
 @RestController
 @RequestMapping("/projects")
 public class ProjectRestController {
